@@ -16,4 +16,6 @@ main = do
 
 
 run :: FilePath -> IO ()
-run path = TBot.withHandle (TBot.Config path) id
+run path = do
+  hBot <- TBot.new (TBot.Config path)
+  IO.hPutStrLn IO.stderr $ show hBot

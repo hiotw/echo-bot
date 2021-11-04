@@ -2,8 +2,8 @@
 
 module Bot.Telegram 
 ( Config(..)
-, Handle(..)
-, withHandle
+, Handle
+, new
 ) where
 
 
@@ -24,21 +24,33 @@ data Handle = Handle
             } deriving Show
 
 
+empty :: Handle
+empty = Handle
+      { hType = mempty
+      , hToken = mempty
+      }
+
+
 instance A.FromJSON Handle where
   parseJSON = A.withObject "Handle" $ \ o ->
     Handle <$> o A..: "type" <*> o A..: "token"
 
 
-withHandle :: Config -> (a -> b) -> IO ()
-withHandle config _ = bracket
+new :: Config -> IO Handle
+new config = bracket
   ( IO.openFile path IO.ReadMode )
   ( IO.hClose )
   ( \ file -> do
       content <- IO.hGetContents file 
 
       case ( A.decode ( pack content ) :: Maybe Handle ) of
-        Nothing -> IO.hPutStrLn IO.stderr $ "Failed to parse " ++ path
-        Just h  -> IO.hPutStrLn IO.stderr $ "Handle: " ++ show h
+        Nothing -> do
+          IO.hPutStrLn IO.stderr $ "Failed to parse " ++ path
+          return empty
+
+        Just h  -> do
+          IO.hPutStrLn IO.stderr $ "Parsed successfuly: " ++ path
+          return h
   )
   where
     path = cPath config
