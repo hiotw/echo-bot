@@ -41,4 +41,4 @@ withHandle config _ = bracket
         Just h  -> IO.hPutStrLn IO.stderr $ "Handle: " ++ show h
   )
   where
-    path   = cPath config
+    path = cPath config
