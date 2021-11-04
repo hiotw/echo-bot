@@ -4,6 +4,7 @@ module Bot.Telegram
 ( Config(..)
 , Handle
 , new
+, ping
 ) where
 
 
@@ -11,6 +12,9 @@ import qualified Data.Aeson                 as A
 import qualified System.IO                  as IO
 import           Control.Exception             ( bracket )
 import           Data.ByteString.Lazy.Char8    ( pack )
+import           Network.HTTP.Simple           ( httpLBS
+                                               , parseRequest
+                                               , getResponseStatusCode )
 
 
 data Config = Config
@@ -20,7 +24,7 @@ data Config = Config
 
 data Handle = Handle
             { hType :: String
-            , hToken :: String 
+            , hToken :: String
             } deriving Show
 
 
@@ -54,3 +58,14 @@ new config = bracket
   )
   where
     path = cPath config
+
+
+ping :: Handle -> IO ()
+ping handle = do
+  request <- parseRequest url
+  response <- httpLBS request
+  IO.hPutStrLn IO.stderr $ "Ping result: "
+                           ++ ( show $ getResponseStatusCode response )
+  where
+    url = "https://api.telegram.org/bot" <> ( hToken handle ) <> "/getMe"
+
