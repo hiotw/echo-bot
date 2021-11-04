@@ -3,6 +3,7 @@ module Main where
 import           Lib
 import           System.Environment
 import qualified System.IO          as IO
+import qualified Bot.Telegram       as TBot
 
 main :: IO ()
 main = do
@@ -10,5 +11,9 @@ main = do
   prog <- getProgName
 
   case arg of
-    [config] -> IO.hPutStrLn IO.stderr $ "Argument: " ++ config
+    [config] -> run config
     _        -> IO.hPutStrLn IO.stderr $ "Usage: " ++ prog ++ " <config path>"
+
+
+run :: FilePath -> IO ()
+run path = TBot.withHandle (TBot.Config path) id
