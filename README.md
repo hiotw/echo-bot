@@ -17,5 +17,11 @@ Just an echo bot.
 
 Run:
 
-    stack exec echo-bot-exe
+    stack exec echo-bot-exe <path to config file>
 
+Config file is a JSON file in format:
+
+    {
+        "type": "telegram",
+        "token": "your telegram token"
+    }
