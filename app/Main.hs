@@ -18,5 +18,6 @@ main = do
 run :: FilePath -> IO ()
 run path = do
   hBot <- TBot.new (TBot.Config path)
+  body <- TBot.update hBot
 
-  TBot.ping hBot
+  print "Done"
