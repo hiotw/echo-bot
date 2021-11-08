@@ -18,6 +18,5 @@ main = do
 run :: FilePath -> IO ()
 run path = do
   hBot <- TBot.new (TBot.Config path)
-  IO.hPutStrLn IO.stderr $ show hBot
 
   TBot.ping hBot
