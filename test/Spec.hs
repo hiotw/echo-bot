@@ -1,2 +1,11 @@
+module Main where
+
+
+import Test.HUnit
+import Telegram.Test as T
+
+
 main :: IO ()
-main = putStrLn "Test suite not yet implemented"
+main = do
+  counts <- runTestTT T.tests
+  putStrLn $ showCounts counts
