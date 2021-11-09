@@ -26,7 +26,7 @@ test3 = TestCase ( do handle <- new ( Config "./test/Telegram/parsable_config.tx
                  )
 
 
--- Prerequisite: pening updates on Telegram server's side
+-- Prerequisite: pending updates on Telegram server's side
 test4 = TestCase ( do updates <- ( TBot.update TBot.empty )
                       assertEqual "Update with empty handle"
                                   updates 
