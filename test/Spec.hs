@@ -8,6 +8,5 @@ import Telegram.Test as T
 
 main :: IO ()
 main = do
-  arg <- getArgs
   counts <- runTestTT T.tests
   putStrLn $ showCounts counts
