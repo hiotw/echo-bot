@@ -5,6 +5,7 @@ module Bot.Telegram
 , Handle
 , new
 , ping
+, update
 ) where
 
 import Bot.Internal.Telegram

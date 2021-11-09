@@ -6,16 +6,19 @@ module Bot.Internal.Telegram
 , new
 , ping
 , empty
+, update
 ) where
 
 
 import qualified Data.Aeson                 as A
 import qualified System.IO                  as IO
 import           Control.Exception             ( bracket )
-import           Data.ByteString.Lazy.Char8    ( pack )
+import           Data.ByteString.Lazy.Char8    ( pack, ByteString )
+import           Network.HTTP.Client           ( responseBody )
 import           Network.HTTP.Simple           ( httpLBS
                                                , parseRequest
-                                               , getResponseStatusCode )
+                                               , getResponseStatusCode 
+                                               )
 
 
 data Config = Config
@@ -70,3 +73,19 @@ ping handle = do
   where
     url = "https://api.telegram.org/bot" <> ( hToken handle ) <> "/getMe"
 
+
+update :: Handle -> IO ByteString
+update handle = do
+  request <- parseRequest url
+  response <- httpLBS request
+  IO.hPutStrLn IO.stderr $ "Update result: "
+                           ++ ( show $ getResponseStatusCode response )
+  IO.hPutStrLn IO.stderr $ "Response body: "
+                           ++ ( show $ responseBody response )
+
+  return $ responseBody response
+
+  where
+    url = "https://api.telegram.org/bot" 
+          <> ( hToken handle ) 
+          <> "/getUpdates?allowed_updates=poll"
