@@ -27,7 +27,7 @@ test3 = TestCase ( do handle <- new ( Config "./test/Telegram/parsable_config.tx
 
 
 -- Prerequisite: pending updates on Telegram server's side
-test4 = TestCase ( do updates <- ( TBot.update TBot.empty )
+test4 = TestCase ( do updates <- ( TBot.update TBot.empty 0 )
                       assertEqual "Update with empty handle"
                                   updates 
                                   ( BS.pack $  "{\"ok\":false,\"error_code\":\

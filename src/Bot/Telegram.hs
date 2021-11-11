@@ -6,6 +6,7 @@ module Bot.Telegram
 , new
 , ping
 , update
+, echo
 ) where
 
 import Bot.Internal.Telegram
